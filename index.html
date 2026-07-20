@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 Apparel — Tees for coders, gamers &amp; pop-culture nerds</title>
+  <meta name="description" content="404 Apparel: dev-humor t-shirts that make tech less boring \u2014 for coders, gamers and pop-culture nerds." />
+  <meta name="theme-color" content="#08080a" />
+
+  <!-- Open Graph (for sharing the link from Instagram) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="404 Apparel — Wear what you love" />
+  <meta property="og:description" content="Dev-humor tees that make tech less boring." />
+  <meta property="og:site_name" content="404 Apparel" />
+  <meta property="og:image" content="images/products/motivation/black.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="404 Apparel — Wear what you love" />
+  <meta name="twitter:image" content="images/products/motivation/black.png" />
+
+  <!-- inline SVG favicon: the 404_ mark -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080a'/%3E%3Ctext x='4' y='21' font-family='monospace' font-size='12' font-weight='bold' fill='%23e8eaf0'%3E404%3C/text%3E%3Crect x='25' y='11' width='2' height='11' fill='%233ddc84'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Vercel Web Analytics (auto-collects traffic once you enable Analytics in the Vercel dashboard). Harmless 404 locally. -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+  <!-- announcement -->
+  <div class="announce mono">// free shipping over <b>$50</b> &nbsp;·&nbsp; <b>Drop 001 &middot; Archi</b> is live &nbsp;·&nbsp; use code <b>GITGUD10</b> for 10% off</div>
+
+  <!-- nav -->
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a href="#top" class="brand">
+        <span class="n404">404</span><span class="cursor">_</span>
+        <small>APPAREL</small>
+      </a>
+      <nav class="links">
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+        <a href="drops.html">Drops</a>
+        <a href="https://www.instagram.com/apparel_404/" target="_blank" rel="noopener">Instagram</a>
+      </nav>
+      <span class="nav-spacer"></span>
+      <button class="cart-btn" id="openCart" aria-label="Open cart">
+        <span>cart</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- hero -->
+    <section class="hero wrap">
+      <span class="terminaltag mono"><span class="dot"></span> // make tech less boring</span>
+      <h1>Wear what you <span class="hl">love</span>.<br />Ship it on a <span class="hl">tee</span>.</h1>
+      <p class="sub">Dev-humor apparel for coders, gamers &amp; pop-culture nerds. Soft cotton, dark mode by default. Every drop is a limited run.</p>
+      <div class="cta-row">
+        <a href="#shop" class="btn btn-primary">&gt;_ Browse the drop</a>
+        <a href="#waitlist" class="btn btn-ghost">Get notified on new tees</a>
+      </div>
+    </section>
+
+    <!-- marquee -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track mono">
+        <span>
+          <b>{ }</b> coders &nbsp;·&nbsp; <b>[ ]</b> gamers &nbsp;·&nbsp; <b>&lt;/&gt;</b> pop-culture nerds &nbsp;·&nbsp; <b>$</b> terminal humor &nbsp;·&nbsp; <b>404</b> not found &nbsp;·&nbsp; <b>;</b> semicolons matter &nbsp;·&nbsp;
+        </span>
+        <span>
+          <b>{ }</b> coders &nbsp;·&nbsp; <b>[ ]</b> gamers &nbsp;·&nbsp; <b>&lt;/&gt;</b> pop-culture nerds &nbsp;·&nbsp; <b>$</b> terminal humor &nbsp;·&nbsp; <b>404</b> not found &nbsp;·&nbsp; <b>;</b> semicolons matter &nbsp;·&nbsp;
+        </span>
+      </div>
+    </div>
+
+    <!-- shop -->
+    <section class="section wrap" id="shop">
+      <div class="section-head">
+        <div>
+          <h2 id="dropTitle"><span class="prompt">&gt;_</span> The Drop</h2>
+          <p class="mono">// tap a tee to preview, pick a size &amp; add to cart</p>
+        </div>
+        <p class="mono" id="itemCount"></p>
+      </div>
+      <div class="filters" id="filters"></div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <!-- about -->
+    <section class="about section" id="about">
+      <div class="wrap about-grid">
+        <div>
+          <h2>Built by nerds, for nerds.</h2>
+          <p>404 Apparel started with one shirt and one inside joke that hit a little too hard. The idea is simple: the stuff we quote in standups, chat threads and 2am debugging sessions belongs on a tee.</p>
+          <p>Every design is printed on soft, pre-shrunk ringspun cotton. Drops are small and rotate often — if a joke lands, it gets printed. If it doesn't, it returns <span class="pink mono">0 rows</span>.</p>
+        </div>
+        <div class="codecard">
+          <span class="c">// our entire business model</span><br />
+          <span class="k">function</span> <span class="b">makeTee</span>(joke) {<br />
+          &nbsp;&nbsp;<span class="k">if</span> (joke.<span class="b">isRelatable</span>()) {<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> <span class="s">"print it"</span>;<br />
+          &nbsp;&nbsp;}<br />
+          &nbsp;&nbsp;<span class="k">return</span> <span class="s">"404: not found"</span>;<br />
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- waitlist -->
+    <section class="section waitlist wrap" id="waitlist">
+      <div class="box">
+        <h2>Get the next drop first</h2>
+        <p>New tees drop in small batches. Drop your email and we'll ping you before they sell out — plus your <span class="accent mono">GITGUD10</span> code for 10% off the first order.</p>
+        <form class="wl-form" id="waitlistForm">
+          <input type="email" id="waitlistEmail" placeholder="you@localhost" required autocomplete="email" />
+          <button type="submit" class="btn btn-primary">Notify me</button>
+        </form>
+        <p class="wl-note">// no spam. unsubscribe with one <span class="pink">rm -rf</span>.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- footer -->
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a href="#top" class="brand"><span class="n404">404</span><span class="cursor">_</span><small>APPAREL</small></a>
+          <p>Tees for coders, gamers &amp; pop-culture nerds. <b class="accent">Making tech less boring.</b> Printed in small batches.</p>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h4>Shop</h4>
+            <a href="#shop">All tees</a>
+            <a href="#shop" data-filter="Coder">Coder</a>
+            <a href="#shop" data-filter="Gamer">Gamer</a>
+            <a href="drops.html">New drops</a>
+          </div>
+          <div class="foot-col">
+            <h4>Company</h4>
+            <a href="#about">About</a>
+            <a href="https://www.instagram.com/apparel_404/" target="_blank" rel="noopener">Instagram</a>
+            <a href="#" data-info="contact">Contact</a>
+          </div>
+          <div class="foot-col">
+            <h4>Help</h4>
+            <a href="#" data-info="sizing">Sizing</a>
+            <a href="#" data-info="shipping">Shipping</a>
+            <a href="#" data-info="returns">Returns</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>&copy; <span id="year"></span> 404 Apparel &middot; all rows reserved</span>
+        <span>made with <span class="pink">&lt;/&gt;</span> and too much coffee</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- cart drawer -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" aria-label="Shopping cart">
+    <div class="drawer-head">
+      <h3>&gt;_ your cart</h3>
+      <button class="x" id="closeCart" aria-label="Close cart">&times;</button>
+    </div>
+    <div class="drawer-body" id="cartBody"></div>
+    <div class="drawer-foot" id="cartFoot" hidden>
+      <div class="row"><span>subtotal</span><span id="subtotal">$0</span></div>
+      <div class="row"><span>shipping</span><span id="shipping">calculated at checkout</span></div>
+      <div class="row total"><span>total</span><span id="total">$0</span></div>
+      <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+      <p class="tinynote">// secure checkout via Stripe</p>
+    </div>
+  </aside>
+
+  <!-- product modal -->
+  <div class="modal-wrap" id="modalWrap">
+    <div class="backdrop" id="modalBackdrop"></div>
+    <div class="modal" id="modal"></div>
+  </div>
+
+  <!-- checkout sheet -->
+  <div class="modal-wrap sheet-wrap" id="checkoutWrap">
+    <div class="backdrop" id="checkoutBackdrop"></div>
+    <div class="sheet" id="checkoutSheet"></div>
+  </div>
+
+  <!-- info sheet -->
+  <div class="modal-wrap sheet-wrap" id="infoWrap">
+    <div class="backdrop" id="infoBackdrop"></div>
+    <div class="sheet" id="infoSheet"></div>
+  </div>
+
+  <!-- toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

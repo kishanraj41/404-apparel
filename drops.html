@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drops — 404 Apparel</title>
+  <meta name="description" content="Every 404 Apparel drop. Dev-humor tees that make tech less boring." />
+  <meta name="theme-color" content="#08080a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080a'/%3E%3Ctext x='4' y='21' font-family='monospace' font-size='12' font-weight='bold' fill='%23e8eaf0'%3E404%3C/text%3E%3Crect x='25' y='11' width='2' height='11' fill='%233ddc84'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+  <div class="announce mono">// make tech less boring &nbsp;·&nbsp; <b>Drop 001 · Archi</b> is live &nbsp;·&nbsp; free shipping over <b>$50</b></div>
+
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a href="index.html#top" class="brand"><span class="n404">404</span><span class="cursor">_</span><small>APPAREL</small></a>
+      <nav class="links">
+        <a href="index.html#shop">Shop</a>
+        <a href="index.html#about">About</a>
+        <a href="drops.html">Drops</a>
+        <a href="https://www.instagram.com/apparel_404/" target="_blank" rel="noopener">Instagram</a>
+      </nav>
+      <span class="nav-spacer"></span>
+      <a href="index.html#shop" class="cart-btn"><span>shop &rarr;</span></a>
+    </div>
+  </header>
+
+  <main class="wrap drops-wrap">
+    <section class="drops-head">
+      <span class="terminaltag mono"><span class="dot"></span> ~/drops</span>
+      <h1>Every <span class="hl">drop</span>.</h1>
+      <p>The agents watch the timeline and ship a batch before a human could finish a meeting about it. Each drop is a small, limited run. Here's the whole line.</p>
+    </section>
+    <div class="drops-grid" id="dropsGrid"></div>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-bottom">
+        <span>&copy; <span id="year"></span> 404 Apparel &middot; making tech less boring</span>
+        <span>made with <span class="pink">&lt;/&gt;</span> and too much coffee</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="products.js"></script>
+  <script>
+    (function () {
+      var grid = document.getElementById("dropsGrid");
+      grid.innerHTML = DROPS.map(function (d) {
+        var count = PRODUCTS.filter(function (p) { return p.drop === d.id; }).length;
+        var current = d.status === "current";
+        return '<a class="drop-card" href="index.html?drop=' + d.id + '#shop">' +
+          '<div class="drop-top"><span class="drop-num mono">DROP ' + d.number + '</span>' +
+          '<span class="badge ' + (current ? "NEW" : "") + '">' + (current ? "CURRENT" : "ARCHIVED") + '</span></div>' +
+          '<h2 class="drop-name">' + d.name + '</h2>' +
+          '<p class="drop-tag">' + d.tagline + '</p>' +
+          '<div class="drop-foot mono"><span>' + count + ' designs</span><span class="accent">&gt;_ view drop &rarr;</span></div>' +
+          '</a>';
+      }).join("");
+      document.getElementById("year").textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>

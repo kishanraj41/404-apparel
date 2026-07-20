@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 Apparel Insights</title>
+  <style>
+    :root {
+      --bg: #0a0b0f;
+      --panel: #13151b;
+      --panel-2: #1a1d25;
+      --line: rgba(255,255,255,.08);
+      --text: #edf2f7;
+      --muted: #8f9bad;
+      --green: #41e08c;
+      --pink: #ff7ab6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, sans-serif;
+      background: radial-gradient(circle at top, #171b25 0%, var(--bg) 55%);
+      color: var(--text);
+    }
+    .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    .hero { padding: 32px 0 20px; display: flex; justify-content: space-between; gap: 18px; align-items: end; }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 48px); }
+    .sub { color: var(--muted); max-width: 720px; }
+    .status { color: var(--green); font-weight: 700; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .card, .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      backdrop-filter: blur(10px);
+    }
+    .kicker { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+    .metric { font-size: 34px; font-weight: 800; margin-top: 8px; }
+    .layout { display: grid; grid-template-columns: 1.4fr .8fr; gap: 18px; padding: 20px 0 32px; }
+    .stack { display: grid; gap: 18px; }
+    .list { display: grid; gap: 10px; }
+    .row { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .event-list { display: grid; gap: 10px; max-height: 660px; overflow: auto; }
+    .event {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .event-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+    .badge { padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: rgba(65,224,140,.12); color: var(--green); }
+    .muted { color: var(--muted); }
+    pre {
+      margin: 10px 0 0;
+      padding: 10px;
+      background: #0d1016;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      color: #d8dee9;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 12px;
+    }
+    .empty { color: var(--muted); padding: 14px 0; }
+    .error { color: var(--pink); }
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 620px) {
+      .hero { display: block; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <div class="status" id="liveStatus">Connecting to live feed...</div>
+        <h1>404 Apparel Insights</h1>
+        <p class="sub">Near real-time visitor activity, click tracking, product interest, and page behavior from the live storefront.</p>
+      </div>
+      <div class="muted" id="generatedAt">Waiting for first sync...</div>
+    </section>
+
+    <section class="grid" id="summaryGrid">
+      <div class="card"><div class="kicker">Visitors Today</div><div class="metric">--</div></div>
+      <div class="card"><div class="kicker">Active Last 5 Min</div><div class="metric">--</div></div>
+      <div class="card"><div class="kicker">Events Tracked</div><div class="metric">--</div></div>
+      <div class="card"><div class="kicker">Feed Refresh</div><div class="metric">2s</div></div>
+    </section>
+
+    <section class="layout">
+      <div class="stack">
+        <div class="panel">
+          <h2>Recent Events</h2>
+          <div class="event-list" id="recentEvents"></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="panel">
+          <h2>Top Events</h2>
+          <div class="list" id="eventCounts"></div>
+        </div>
+        <div class="panel">
+          <h2>Top Products</h2>
+          <div class="list" id="topProducts"></div>
+        </div>
+        <div class="panel">
+          <h2>Top Pages</h2>
+          <div class="list" id="topPages"></div>
+        </div>
+        <div class="panel">
+          <h2>Recent Orders</h2>
+          <div class="event-list" id="ordersList" style="max-height:340px"></div>
+        </div>
+        <div class="panel">
+          <h2>Email Signups <span class="muted" id="subsCount"></span></h2>
+          <div class="list" id="subsList"></div>
+        </div>
+        <div class="panel">
+          <h2>Setup Status</h2>
+          <div class="list" id="setupStatus"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function renderMetric(index, value) {
+      var cards = document.querySelectorAll('#summaryGrid .metric');
+      if (cards[index]) cards[index].textContent = value;
+    }
+
+    function renderRankList(id, entries, emptyText) {
+      var el = document.getElementById(id);
+      if (!entries || !entries.length) {
+        el.innerHTML = '<div class="empty">' + emptyText + '</div>';
+        return;
+      }
+      el.innerHTML = entries.map(function (entry) {
+        return '<div class="row"><span>' + entry.key + '</span><strong>' + entry.value + '</strong></div>';
+      }).join('');
+    }
+
+    function renderEvents(events) {
+      var el = document.getElementById('recentEvents');
+      if (!events || !events.length) {
+        el.innerHTML = '<div class="empty">No events captured yet.</div>';
+        return;
+      }
+      el.innerHTML = events.map(function (event) {
+        var origin = ((event.city || '') + (event.country ? ', ' + event.country : '')).replace(/^,\s*/, '');
+        return '<article class="event">' +
+          '<div class="event-top">' +
+            '<span class="badge">' + event.event + '</span>' +
+            '<span class="muted">' + new Date(event.timestamp).toLocaleTimeString() + '</span>' +
+          '</div>' +
+          '<div class="row" style="margin-top:10px"><span>Path</span><strong>' + (event.path || '/') + '</strong></div>' +
+          '<div class="row"><span>Visitor</span><strong>' + (event.visitorId || 'anon') + '</strong></div>' +
+          '<div class="row"><span>Origin</span><strong>' + (origin || event.referrer || 'direct') + '</strong></div>' +
+          '<pre>' + JSON.stringify(event.params || {}, null, 2) + '</pre>' +
+        '</article>';
+      }).join('');
+    }
+
+    function renderSetup(data) {
+      var el = document.getElementById('setupStatus');
+      if (!data.enabled) {
+        document.getElementById('liveStatus').textContent = 'Dashboard waiting for KV setup';
+        document.getElementById('liveStatus').className = 'status error';
+        el.innerHTML = (data.setup || []).map(function (line) {
+          return '<div class="row"><span class="muted">' + line + '</span></div>';
+        }).join('');
+        return;
+      }
+      document.getElementById('liveStatus').textContent = 'Live feed active';
+      document.getElementById('liveStatus').className = 'status';
+      el.innerHTML = '<div class="row"><span class="muted">Storage</span><strong>Vercel KV</strong></div>' +
+        '<div class="row"><span class="muted">Mode</span><strong>2s polling</strong></div>' +
+        '<div class="row"><span class="muted">Scope</span><strong>Visitors + clicks + funnel</strong></div>';
+    }
+
+    function renderOrders(orders) {
+      var el = document.getElementById('ordersList');
+      if (!orders || !orders.length) { el.innerHTML = '<div class="empty">No orders yet.</div>'; return; }
+      el.innerHTML = orders.map(function (o) {
+        var items = (o.items || []).map(function (i) { return (i.qty || 1) + '\u00d7 ' + i.name + (i.size ? ' (' + i.size + '/' + i.color + ')' : ''); }).join(', ');
+        return '<article class="event">' +
+          '<div class="event-top"><span class="badge">$' + Number(o.total || 0).toFixed(0) + '</span>' +
+          '<span class="muted">' + new Date(o.timestamp).toLocaleString() + '</span></div>' +
+          '<div class="row" style="margin-top:8px"><span class="muted">' + (o.email || 'no email given') + '</span>' +
+          '<strong class="muted">' + (o.status || '') + '</strong></div>' +
+          '<div class="row"><span>' + items + '</span></div></article>';
+      }).join('');
+    }
+
+    function renderSubs(subs) {
+      var el = document.getElementById('subsList');
+      var c = document.getElementById('subsCount');
+      if (c) c.textContent = subs.count ? '(' + subs.count + ')' : '';
+      var recent = subs.recent || [];
+      if (!recent.length) { el.innerHTML = '<div class="empty">No signups yet.</div>'; return; }
+      el.innerHTML = recent.map(function (sub) {
+        return '<div class="row"><span>' + sub.email + '</span><strong class="muted">' + new Date(sub.timestamp).toLocaleDateString() + '</strong></div>';
+      }).join('');
+    }
+
+    async function refreshDashboard() {
+      try {
+        var response = await fetch('/api/events', { cache: 'no-store' });
+        var data = await response.json();
+        renderSetup(data);
+        document.getElementById('generatedAt').textContent = data.generatedAt ? 'Last sync: ' + new Date(data.generatedAt).toLocaleTimeString() : 'Awaiting events';
+        if (!data.enabled) return;
+        renderMetric(0, String(data.summary.visitorsToday || 0));
+        renderMetric(1, String(data.summary.activeNow || 0));
+        renderMetric(2, String(data.summary.totalEventsTracked || 0));
+        renderEvents(data.recentEvents || []);
+        renderRankList('eventCounts', data.eventCounts || [], 'No event counts yet.');
+        renderRankList('topProducts', data.topProducts || [], 'No product actions yet.');
+        renderRankList('topPages', data.topPages || [], 'No page activity yet.');
+        renderOrders(data.recentOrders || []);
+        renderSubs(data.subscribers || { count: 0, recent: [] });
+      } catch (error) {
+        document.getElementById('liveStatus').textContent = 'Dashboard sync failed';
+        document.getElementById('liveStatus').className = 'status error';
+        document.getElementById('setupStatus').innerHTML = '<div class="row"><span class="muted">' + error.message + '</span></div>';
+      }
+    }
+
+    refreshDashboard();
+    setInterval(refreshDashboard, 2000);
+  </script>
+</body>
+</html>
